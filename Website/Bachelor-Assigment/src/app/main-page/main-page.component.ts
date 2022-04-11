@@ -19,6 +19,7 @@ export class MainPageComponent implements OnInit {
   constructor(private store: Store) {
     // @ts-ignore
     this.allTests.subscribe((data) => {
+      console.log(data);
       this.tests = data;
     });
   }

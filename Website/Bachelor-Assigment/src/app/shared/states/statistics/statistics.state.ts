@@ -19,6 +19,7 @@ export class StatisticsState {
               private store: Store) {
     statisticsService.setUpAllTest().subscribe(
       (data) => {
+        console.log(data);
         //this.store.dispatch(new SetUpAllAlarms(data as Alarm[]));
       });
   }
