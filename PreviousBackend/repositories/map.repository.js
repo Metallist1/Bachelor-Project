@@ -1,11 +1,11 @@
 'use strict';
-import { getDatabase, ref, child, get } from "firebase/database";
 
-const database = getDatabase;
+import { database } from "../db/firebaseDB.js";
+import { ref, child, get } from "firebase/database";
 
-let addMap =  async function(user, result) {
+let addMovementEvent =  async function(user, result) {
     const dbRef = ref(database);
-    get(child(dbRef, `users`)).then((snapshot) => {
+    get(child(dbRef, `Users`)).then((snapshot) => {
         if (snapshot.exists()) {
             console.log(snapshot.val());
             result(null, snapshot.val());
@@ -18,6 +18,102 @@ let addMap =  async function(user, result) {
         });
 };
 
-module.exports = {
-    addMap
-}
+
+let getTopLoadoutByMap =  async function(user, result) {
+    const dbRef = ref(database);
+    get(child(dbRef, `Users`)).then((snapshot) => {
+        if (snapshot.exists()) {
+            console.log(snapshot.val());
+            result(null, snapshot.val());
+        } else {
+            console.log("No data available");
+        }
+        }).catch((error) => {
+            console.error(error);
+            result(error, null);
+        });
+};
+
+
+let getTopSkillByMap =  async function(user, result) {
+    const dbRef = ref(database);
+    get(child(dbRef, `Users`)).then((snapshot) => {
+        if (snapshot.exists()) {
+            console.log(snapshot.val());
+            result(null, snapshot.val());
+        } else {
+            console.log("No data available");
+        }
+        }).catch((error) => {
+            console.error(error);
+            result(error, null);
+        });
+};
+
+
+let getAverageMapSurvivalTime =  async function(user, result) {
+    const dbRef = ref(database);
+    get(child(dbRef, `Users`)).then((snapshot) => {
+        if (snapshot.exists()) {
+            console.log(snapshot.val());
+            result(null, snapshot.val());
+        } else {
+            console.log("No data available");
+        }
+        }).catch((error) => {
+            console.error(error);
+            result(error, null);
+        });
+};
+
+
+let getTotalKillsByMap =  async function(user, result) {
+    const dbRef = ref(database);
+    get(child(dbRef, `Users`)).then((snapshot) => {
+        if (snapshot.exists()) {
+            console.log(snapshot.val());
+            result(null, snapshot.val());
+        } else {
+            console.log("No data available");
+        }
+        }).catch((error) => {
+            console.error(error);
+            result(error, null);
+        });
+};
+
+
+let getTotalDeathsByMap =  async function(user, result) {
+    const dbRef = ref(database);
+    get(child(dbRef, `Users`)).then((snapshot) => {
+        if (snapshot.exists()) {
+            console.log(snapshot.val());
+            result(null, snapshot.val());
+        } else {
+            console.log("No data available");
+        }
+        }).catch((error) => {
+            console.error(error);
+            result(error, null);
+        });
+};
+
+
+let getPopuliarityOfMap =  async function(user, result) {
+    const dbRef = ref(database);
+    get(child(dbRef, `Users`)).then((snapshot) => {
+        if (snapshot.exists()) {
+            console.log(snapshot.val());
+            result(null, snapshot.val());
+        } else {
+            console.log("No data available");
+        }
+        }).catch((error) => {
+            console.error(error);
+            result(error, null);
+        });
+};
+
+
+
+export {addMovementEvent, getTopLoadoutByMap , getTopSkillByMap , getAverageMapSurvivalTime, getTotalKillsByMap, getTotalDeathsByMap , getPopuliarityOfMap};

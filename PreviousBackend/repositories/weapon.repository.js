@@ -1,11 +1,11 @@
 'use strict';
-import { getDatabase, ref, child, get } from "firebase/database";
 
-const database = getDatabase;
+import { database } from "../db/firebaseDB.js";
+import { ref, child, get } from "firebase/database";
 
-let addShot =  async function(user, result) {
+let addEvent =  async function(user, result) {
     const dbRef = ref(database);
-    get(child(dbRef, `users`)).then((snapshot) => {
+    get(child(dbRef, `Users`)).then((snapshot) => {
         if (snapshot.exists()) {
             console.log(snapshot.val());
             result(null, snapshot.val());
@@ -18,6 +18,20 @@ let addShot =  async function(user, result) {
         });
 };
 
-module.exports = {
-    addShot
-}
+
+let getAllWeaponStats =  async function(user, result) {
+    const dbRef = ref(database);
+    get(child(dbRef, `Users`)).then((snapshot) => {
+        if (snapshot.exists()) {
+            console.log(snapshot.val());
+            result(null, snapshot.val());
+        } else {
+            console.log("No data available");
+        }
+        }).catch((error) => {
+            console.error(error);
+            result(error, null);
+        });
+};
+
+export {addEvent, getAllWeaponStats};

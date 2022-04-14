@@ -1,9 +1,9 @@
+
 'use strict';
+import {addEvent as addEventRepository, getAllWeaponStats } from '../repositories/weapon.repository.js'
 
-const weaponRepository = require('../repositories/weapon.repository');
-
-let addShot = function(req, res) {
-    weaponRepository.addShot(req, function(err, user) {
+let addEvent = function(req, res) {
+    addEventRepository(req, function(err, user) {
         if (err){
             res(err, null);
         }else{
@@ -12,6 +12,55 @@ let addShot = function(req, res) {
     });
 };
 
-module.exports = {
-    addShot
-}
+let getAverageHitMiss = function(req, res) {
+    getAllWeaponStats(req, function(err, user) {
+        if (err){
+            res(err, null);
+        }else{
+            res(null, user);
+        }
+    });
+        //Filter it here
+};
+
+let getTotalKillsByID = function(req, res) {
+    getAllWeaponStats(req, function(err, user) {
+        if (err){
+            res(err, null);
+        }else{
+            res(null, user);
+        }
+    });
+        //Filter it here
+};
+
+let getTotalDeathsByID = function(req, res) {
+    getAllWeaponStats(req, function(err, user) {
+        if (err){
+            res(err, null);
+        }else{
+            res(null, user);
+        }
+    });
+        //Filter it here
+};
+
+let getPopuliarityByID = function(req, res) {
+    getAllWeaponStats(req, function(err, user) {
+        if (err){
+            res(err, null);
+        }else{
+            res(null, user);
+        }
+    });
+    //Filter it here
+};
+
+
+export {addEvent , getAverageHitMiss , getTotalKillsByID, getTotalDeathsByID , getPopuliarityByID};
+
+// Get average hit / miss
+// Add an event
+// Get total kills by weapon id
+// Get total deaths by weapon id
+// Populiarity of weapon by id
