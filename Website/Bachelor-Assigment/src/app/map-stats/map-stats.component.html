@@ -1,0 +1,20 @@
+<div> ----- Map stats -----</div>
+<select [(ngModel)]='selectedMap' class="form-select form-select-lg mb-3" aria-label=".form-select-lg example" (ngModelChange)="onChange($event)">
+  <option value="0" [ngValue]="0" disabled>Select map</option>
+  <option value="1" [ngValue]="1">Test</option>
+  <option *ngFor="let map of  allMaps" [ngValue]="map.id">
+    {{ map.name }}
+  </option>
+</select>
+
+<div *ngIf="selectedMap != 0 && mapStatistic">
+  <div>Map ID: {{mapStatistic.map_id}}</div>
+  <div>Map Name: {{mapStatistic.map_name}}</div>
+  <div>Total kills by kills: {{mapStatistic.total_kills}}</div>
+  <div>Total Deaths by environment: {{mapStatistic.total_deaths_by_env}}</div>
+  <div>Total Deaths by players: {{mapStatistic.total_deaths_by_players}}</div>
+  <div>Most picked loadout: {{mapStatistic.popular_loadout}}</div>
+  <div>Most picked skill: {{mapStatistic.popular_skill}}</div>
+  <div>Average Survival time: {{mapStatistic.average_survival_time}}</div>
+  <div>Popularity: {{mapStatistic.populiarity}}</div>
+</div>

@@ -104,8 +104,12 @@ server.listen(PORT, function (err) {
 
 io.on("connection", function (socket) {
     console.log("Socket : " + socket.id + " has connected");
-        // socket.emit("all_test", user);
-
+        // socket.emit("all_maps", user);
+// socket.emit("all_weapons", user);
+// socket.emit("current_player_count", user);
+// socket.emit("current_step_count", user);
+// socket.emit("current_bullet_count", user);
+// socket.emit("general_statistics", user);
     socket.on('login', (message) => {
         login(message, function(err, user) {
             if (err){
@@ -146,20 +150,29 @@ io.on("connection", function (socket) {
         });
     });
 
-    socket.on('get_data_by_player_id', (playerID) => {
-        // top kills. Top loadouts. Top maps.
+
+    socket.on('get_statistics_by_map_id', (mapID) => {
+        socket.emit("map_statistics", {  map_id: mapID.id,
+            map_name: "Test",
+            total_deaths_by_env: "4",
+            total_deaths_by_players: "14",
+            total_kills: "25",
+            popular_loadout: "Weapon",
+            popular_skill: "Skiller",
+            average_survival_time: "2.20",
+            populiarity: "1",
+          });
     });
 
-    socket.on('get_data_by_type', (eventType) => {
-        //Return a list of specific events. Such as "hits" , "miss". This is used for weapon data
-    });
-
-    socket.on('get_data_by_map_type', (mapID) => {
-        // Hit / miss / how many steps / most popular loadout / most popular skill
-    });
-
-    socket.on('get_data_by_loadout', (loadoutID) => {
-        // Average KD / Accuracy / Populiarity
+    socket.on('get_statistics_by_weapon_id', (loadoutID) => {
+        socket.emit("weapon_statistics", {
+            weapon_id: loadoutID.id,
+            weapon_name: "Test weapon",
+            hit_rate: "2.3",
+            total_kills: "25",
+            total_deaths: "2",
+            populiarity: "-1",
+        });
 
     });
 

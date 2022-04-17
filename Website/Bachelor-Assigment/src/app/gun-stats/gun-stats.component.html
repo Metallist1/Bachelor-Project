@@ -1,0 +1,19 @@
+<div> ----- Gun stats -----</div>
+<select [(ngModel)]='selectedWeapon' class="form-select form-select-lg mb-3" aria-label=".form-select-lg example" (ngModelChange)="onChange($event)">
+  <option value="0" [ngValue]="0" disabled>Select Gun</option>
+  <option value="1" [ngValue]="1">Select Gun</option>
+  <option *ngFor="let weapon of  allWeapons" [ngValue]="weapon.id">
+    {{ weapon.name }}
+  </option>
+</select>
+
+<div *ngIf="selectedWeapon != 0 && weaponStatistic">
+  <div> ----- Gun stats -----</div>
+  <div>Weapon ID: {{weaponStatistic.weapon_id}}</div>
+  <div>Weapon Name: {{weaponStatistic.weapon_name}}</div>
+  <div>Accuracy %: {{weaponStatistic.hit_rate}}</div>
+  <div>Total kills: {{weaponStatistic.total_kills}}</div>
+  <div>Total deaths: {{weaponStatistic.total_deaths}}</div>
+  <div>KD: {{weaponStatistic.total_kills}} / {{weaponStatistic.total_deaths}}</div>
+  <div>Popularity: {{weaponStatistic.populiarity}}</div>
+</div>

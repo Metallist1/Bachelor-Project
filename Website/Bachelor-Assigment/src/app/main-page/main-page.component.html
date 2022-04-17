@@ -1,2 +1,27 @@
-<p>main-page works!</p>
-<button class="btn btn-sm btn-danger" (click)="createTest()">Test</button>
+<div>
+  <div> ----- Test Login -----</div>
+  <app-login-view></app-login-view>
+</div>
+
+<div>
+  <div> ----- Add events -----</div>
+  <button class="btn btn-sm btn-danger" (click)="addEvent()">Add event</button>
+</div>
+<div *ngIf="generalStat">
+  <div> ----- General stats -----</div>
+  <div>Total Players Online: {{players}} </div>
+  <div>Total steps taken: {{steps}} </div>
+  <div>Bullets shot: {{bullets}} </div>
+  <div>Most Favorite Map: {{generalStat.favorite_map}}</div>
+  <div>Most Used Loadout: {{generalStat.most_user_loadout}}</div>
+  <div>Most Most common skill: {{generalStat.most_common_skill}}</div>
+</div>
+
+<div>
+  <app-map-stats></app-map-stats>
+</div>
+
+<div>
+  <app-gun-stats></app-gun-stats>
+</div>
+

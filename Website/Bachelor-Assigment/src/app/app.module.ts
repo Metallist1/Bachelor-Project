@@ -11,6 +11,10 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { NgxsModule } from "@ngxs/store";
 import { StatisticsState } from "./shared/states/statistics/statistics.state";
 import { NgxsStoragePluginModule } from "@ngxs/storage-plugin";
+import { LoginViewComponent } from './login-view/login-view.component';
+import {FormsModule, ReactiveFormsModule} from "@angular/forms";
+import { GunStatsComponent } from './gun-stats/gun-stats.component';
+import { MapStatsComponent } from './map-stats/map-stats.component';
 
 const config: SocketIoConfig = {
   url: environment.socketUrl, // socket server url;
@@ -22,7 +26,10 @@ const config: SocketIoConfig = {
 @NgModule({
   declarations: [
     AppComponent,
-    MainPageComponent
+    MainPageComponent,
+    LoginViewComponent,
+    GunStatsComponent,
+    MapStatsComponent
   ],
   imports: [
     BrowserModule,
@@ -34,6 +41,8 @@ const config: SocketIoConfig = {
     NgxsStoragePluginModule.forRoot({
       key: ['stats']
     }),
+    FormsModule,
+    ReactiveFormsModule,
     NgbModule,
   ],
   providers: [],
