@@ -48,4 +48,12 @@ export class StatisticsService {
   getGeneralStats() {
     return this.socket.fromEvent('general_statistics');
   }
+
+  login(username: string, password: string) {
+    this.socket.emit('login', {username: username, password: password});
+  }
+
+  register(username: string, password: string) {
+    this.socket.emit('register', {username: username, password: password});
+  }
 }

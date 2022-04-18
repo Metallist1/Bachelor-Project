@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
+import {Store} from "@ngxs/store";
+import {Login, Register} from "../shared/states/statistics/statistics.action";
 
 @Component({
   selector: 'app-login-view',
@@ -20,6 +22,7 @@ export class LoginViewComponent implements OnInit {
 
   constructor(
     private fb: FormBuilder,
+    private store: Store
   ) {
   }
 
@@ -45,8 +48,13 @@ export class LoginViewComponent implements OnInit {
       this.error = true;
       return;
     }
-    this.isDisabled = true;
-    console.log(this.emailDetails.value.email, this.emailDetails.value.title, this.emailDetails.value.contents)
+
+    console.log(this.emailDetails.value.email, this.emailDetails.value.password)
+    if(this.isChecked){
+      this.store.dispatch( new Register(this.emailDetails.value.email, this.emailDetails.value.password));
+    }else{
+      this.store.dispatch( new Login(this.emailDetails.value.email, this.emailDetails.value.password));
+    }
    /* this.emailService.newEmail({
       email:this.emailDetails.value.email,
       title: this.emailDetails.value.title,

@@ -39,14 +39,8 @@ let disconnectPlayer = function(req, res) {
 
 };
 
-let getAllPlayersOnline = function(req, res) {
-    getAllPlayers(req, function(err, allUsers) {
-        if (err){
-            res(err, null);
-        }else{
-            res(null, allUsers);
-        }
-    });
+let getAllPlayersOnline = function() {
+    return getAllPlayers();
 };
 
 export {login , register , getAllPlayersOnline, disconnectPlayer , addPlayer};

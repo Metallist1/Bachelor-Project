@@ -2,7 +2,9 @@
 'use strict';
 import { login as repositoryLogin, register as repositoryRegister } from '../repositories/user.repositories.js'
 
-const playerList = [];
+import { BehaviorSubject} from "rxjs";
+
+const playerList = new BehaviorSubject([]);
 
 let login = function(req, res) {
     repositoryLogin(req, function(err, user) {
@@ -26,21 +28,31 @@ let register = function(req, res) {
     });
 };
 
+
 let addPlayer = function(req, res) {
-    playerList.push(req);
+    const existingUser = playerList.value.find(
+        (u) => u.socketID === req.socketID,
+      );
+      if (!existingUser) {
+        console.log("User already added")
+      } else {
+        console.log("New user added to behavior")
+      }
+      playerList.next([
+        ...playerList.value,
+        req,
+      ]);
 };
 
 let disconnectPlayer = function(req, res) {
-    const index = playerList.findIndex(obj => obj.id === req.id);
-    const playerList = [
-        ...playerList.slice(0, index),
-        ...playerList.slice(index + 1)
-    ]
+    playerList.next(
+        playerList.value.filter((u) => u.socketID !== req),
+      );
 };
 
 
-let getAllPlayersOnline = function(req, res) {
-    res(null, playerList);
+let getAllPlayersOnline = function() {
+    return playerList;
 };
 
 export {login , register , getAllPlayersOnline, disconnectPlayer , addPlayer};

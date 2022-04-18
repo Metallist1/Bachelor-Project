@@ -2,7 +2,7 @@ import {Action, Selector, State, StateContext, Store} from "@ngxs/store";
 import {Injectable} from "@angular/core";
 import {
   GetMapStatistic,
-  GetWeaponStatistic,
+  GetWeaponStatistic, Login, Register,
   SetUpAllMaps,
   SetUpAllWeapons, SetUpBullets, SetUpCurrentPlayers,
   SetUpGeneralStats, SetUpMapsStats, SetUpSteps, SetUpWeaponStats
@@ -206,6 +206,7 @@ export class StatisticsState {
       bulletShot: bullets,
     });
   }
+
   @Action(SetUpSteps)
   setUpSteps({getState, setState}: StateContext<StatisticsStateModel>,
              { steps }: SetUpSteps): any {
@@ -214,5 +215,18 @@ export class StatisticsState {
       ...state,
       stepCount: steps,
     });
+  }
+
+
+  @Action(Login)
+  login({getState, setState}: StateContext<StatisticsStateModel>,
+        { username, password }: Login): any {
+    this.statisticsService.login(username, password);
+  }
+
+  @Action(Register)
+  register({getState, setState}: StateContext<StatisticsStateModel>,
+        { username, password }: Register): any {
+    this.statisticsService.register(username, password);
   }
 }

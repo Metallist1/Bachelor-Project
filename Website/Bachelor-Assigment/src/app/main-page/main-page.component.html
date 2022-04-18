@@ -7,14 +7,16 @@
   <div> ----- Add events -----</div>
   <button class="btn btn-sm btn-danger" (click)="addEvent()">Add event</button>
 </div>
-<div *ngIf="generalStat">
+<div >
   <div> ----- General stats -----</div>
   <div>Total Players Online: {{players}} </div>
   <div>Total steps taken: {{steps}} </div>
   <div>Bullets shot: {{bullets}} </div>
+  <div *ngIf="generalStat">
   <div>Most Favorite Map: {{generalStat.favorite_map}}</div>
   <div>Most Used Loadout: {{generalStat.most_user_loadout}}</div>
   <div>Most Most common skill: {{generalStat.most_common_skill}}</div>
+  </div>
 </div>
 
 <div>

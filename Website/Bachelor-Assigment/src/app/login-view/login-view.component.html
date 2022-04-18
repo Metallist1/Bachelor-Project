@@ -13,23 +13,23 @@
           <li *ngIf="f.email.errors?.email && ! (f.email.errors?.required || f.email.errors?.minlength || f.email.errors?.maxlength)" class="error-text shake-horizontal">  A valid email is required </li>
         </ul>
       </div>
-      <input type="email" name="email" ngModel [email]="true" class="form-control"
+      <input type="email" name="email"  class="form-control"
              [ngClass]="{'error': f.email.errors && (f.email.dirty || f.email.touched || error), 'shake-horizontal':  f.email.errors && error }" placeholder="Type your email here" formControlName="email" />
     </div>
     <div class="field">
       <div class="question-title">
         <div>
-          Email:
+          password:
         </div>
-        <ul *ngIf="f.email.errors && (f.email.dirty || f.email.touched || error)">
-          <li *ngIf="f.email.errors?.minlength" class="error-text shake-horizontal">  Email must be at least 5 characters</li>
-          <li *ngIf="f.email.errors?.maxlength" class="error-text shake-horizontal">  Email must be no more than 100 characters</li>
-          <li *ngIf="f.email.errors?.required" class="error-text shake-horizontal">  Email is required </li>
-          <li *ngIf="f.email.errors?.email && ! (f.email.errors?.required || f.email.errors?.minlength || f.email.errors?.maxlength)" class="error-text shake-horizontal">  A valid email is required </li>
+        <ul *ngIf="f.password.errors && (f.password.dirty || f.password.touched || error)">
+          <li *ngIf="f.password.errors?.minlength" class="error-text shake-horizontal">  password must be at least 5 characters</li>
+          <li *ngIf="f.password.errors?.maxlength" class="error-text shake-horizontal">  password must be no more than 100 characters</li>
+          <li *ngIf="f.password.errors?.required" class="error-text shake-horizontal">  password is required </li>
+          <li *ngIf="!(f.password.errors?.required || f.password.errors?.minlength || f.password.errors?.maxlength)" class="error-text shake-horizontal">  A valid password is required </li>
         </ul>
       </div>
-      <input type="email" name="email" ngModel [email]="true" class="form-control"
-             [ngClass]="{'error': f.email.errors && (f.email.dirty || f.email.touched || error), 'shake-horizontal':  f.email.errors && error }" placeholder="Type your email here" formControlName="email" />
+      <input type="password" name="password" ngModel class="form-control"
+             [ngClass]="{'error': f.password.errors && (f.password.dirty || f.password.touched || error), 'shake-horizontal':  f.password.errors && error }" placeholder="Type your password here" formControlName="password" />
     </div>
     <div class="form-check">
       <input type="checkbox" class="form-check-input" id="exampleCheck1" [(ngModel)]="isChecked" [ngModelOptions]="{standalone: true}">
@@ -38,7 +38,7 @@
     <input type="submit" *ngIf="!submitted || error"
            [disabled]="this.isDisabled"
            class="btn submit-button button-on-hover" [ngClass]="{'button-change-color': loading === true }" value="Login/Register">
-    <ul class="special-case" *ngIf="!f.email.errors && !f.contents.errors && !f.title.errors && backendError">
+    <ul class="special-case" *ngIf="!f.email.errors && !f.password.errors && backendError">
       <li class="error-text shake-horizontal backendError">Unable to reach the backend</li>
     </ul>
     <div *ngIf="submitted && !error"> Thank you for contacting us. We will respond as soon as possible !</div>

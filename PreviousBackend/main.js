@@ -101,23 +101,34 @@ server.listen(PORT, function (err) {
 });
 
 //Socket IO
+getAllPlayersOnline().subscribe((data) => {
+    console.log(data);
+    io.emit("current_player_count", data.length);
+  });
 
 io.on("connection", function (socket) {
     console.log("Socket : " + socket.id + " has connected");
         // socket.emit("all_maps", user);
 // socket.emit("all_weapons", user);
-// socket.emit("current_player_count", user);
+  //  socket.emit("current_player_count", getAllPlayersOnline());
 // socket.emit("current_step_count", user);
 // socket.emit("current_bullet_count", user);
 // socket.emit("general_statistics", user);
     socket.on('login', (message) => {
+        console.log(message);
         login(message, function(err, user) {
             if (err){
                 console.log(err);
                 socket.emit("get_user_error", err);
             }
             else{
-                addPlayer(user, function(err) {
+                console.dir(user, { depth: null }); // `depth: null` ensures unlimited recursion
+                console.log("Logged in user");
+                const postData = {
+                    user: user,
+                    socketID: socket.id
+                };
+                addPlayer(postData, function(err) {
                     if (err){
                         console.log(err);
                     }
@@ -131,7 +142,27 @@ io.on("connection", function (socket) {
     });
 
     socket.on('register', (message) => {
+        console.log(message);
         register(message, function(err, user) {
+            if (err){
+                console.log(err);
+                socket.emit("get_user_error", err);
+            }
+            else{
+                console.dir(user, { depth: null }); // `depth: null` ensures unlimited recursion
+                console.log("Registered");
+               /* addPlayer(user, function(err) {
+                    if (err){
+                        console.log(err);
+                    }
+                    else{
+                        io.emit("all_users", getAllPlayersOnline());
+                    }
+                });
+                socket.emit("logged_in", user);*/
+            }
+        });
+      /*  register(message, function(err, user) {
             if (err){
                 console.log(err);
                 socket.emit("get_user_error", err);
@@ -147,7 +178,7 @@ io.on("connection", function (socket) {
                 });
                 socket.emit("registed_user", user);
             }
-        });
+        });*/
     });
 
 

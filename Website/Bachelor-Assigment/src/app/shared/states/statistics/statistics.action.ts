@@ -54,3 +54,14 @@ export class SetUpGeneralStats {
   static readonly type = '[Auth] SetUpGeneralStats';
   constructor(public generalStat: GeneralStatisticsObject) {}
 }
+
+
+export class Login {
+  static readonly type = '[Auth] Login';
+  constructor(public username: string, public password: string) {}
+}
+
+export class Register {
+  static readonly type = '[Auth] Register';
+  constructor(public username: string, public password: string) {}
+}
