@@ -13,7 +13,8 @@ import {WeaponStatisticObject} from "../shared/states/statistics/entities/weapon
 })
 export class GunStatsComponent implements OnInit {
 
-
+  kd = 0;
+  hitRate = 0;
   selectedWeapon = 0;
 
   // @ts-ignore
@@ -38,6 +39,10 @@ export class GunStatsComponent implements OnInit {
     this.statistic.subscribe( (data) => {
       if(data){
         this.weaponStatistic = data;
+        // @ts-ignore
+        this.hitRate = data.hit_rate * 100;
+        // @ts-ignore
+        this.kd = data.total_deaths / data.total_kills;
       }
     });
   }

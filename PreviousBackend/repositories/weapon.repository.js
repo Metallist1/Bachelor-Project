@@ -29,7 +29,6 @@ let getAllWeaponStats =  async function(user, result) {
             objectArray.forEach(([key, value]) => {
                 matches.push( Object.entries( value.matches));
             });
-            console.log(matches);
             result(null, matches);
         } else {
             console.log("No data available");

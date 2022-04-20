@@ -3,14 +3,13 @@
 import {addEvent as addEventRepository, getAllWeaponStats , getAllWeapons as getAllWeaponsRepository , getWeaponInfo as getWeaponInfoRepository } from '../repositories/weapon.repository.js'
 
 let addEvent = function(req, res) {
-  /*  getAllWeaponStats(req, function(err, user) {
+    addEventRepository(req, function(err, user) {
         if (err){
             res(err, null);
         }else{
             res(null, user);
         }
-    });*/
-    res(null, "0");
+    });
 };
 
 let getAverageHitMiss = function(req, res) {
@@ -20,9 +19,9 @@ let getAverageHitMiss = function(req, res) {
         }else{
             let shots = 0;
             let hits = 0;
-            weapon_info.forEach(([key, value]) => {
-                if(value){
-                    const minor_events = value[1].minor_events;
+            weapon_info.forEach((value) => {
+                value.forEach((values) => {
+                    const minor_events = values[1].minor_events;
                     const objectArray = Object.entries(minor_events);
                     objectArray.forEach(([keys, values]) => {
                         if(values.type === "shot" && values.loadout_id.toString() === req.toString()){
@@ -33,7 +32,7 @@ let getAverageHitMiss = function(req, res) {
                         }
                         
                     });
-                }
+                });
             });
             res(null, hits/shots);
         }
@@ -46,17 +45,19 @@ let getTotalKillsByID = function(req, res) {
             res(err, null);
         }else{
             let killCount = 0;
-            weapon_info.forEach(([key, value]) => {
-                if(value){
-                    const core_events = value[1].core_events;
-                    const objectArray = Object.entries(core_events);
-                    objectArray.forEach(([keys, values]) => {
-                        if(values.cause === "Weapon" && values.loadout_id.toString() === req.toString()){
-                            killCount = killCount + 1;
-                        }
-                        
-                    });
-                }
+            weapon_info.forEach((value) => {
+                value.forEach((values) => {
+                    if(value){
+                        const core_events = values[1].core_events;
+                        const objectArray = Object.entries(core_events);
+                        objectArray.forEach(([keys, values]) => {
+                            if(values.cause === "Weapon" && values.killers_loadout_id.toString() === req.toString()){
+                                killCount = killCount + 1;
+                            }
+                            
+                        });
+                    }
+                });
             });
             res(null, killCount);
         }
@@ -64,27 +65,66 @@ let getTotalKillsByID = function(req, res) {
 };
 
 let getTotalDeathsByID = function(req, res) {
-  /*  getAllWeaponStats(req, function(err, user) {
+    getAllWeaponStats(req, function(err, weapon_info) {
         if (err){
             res(err, null);
         }else{
-            res(null, user);
+            let killCount = 0;
+            weapon_info.forEach((value) => {
+                value.forEach((values) => {
+                    if(value){
+                        const core_events = values[1].core_events;
+                        const objectArray = Object.entries(core_events);
+                        objectArray.forEach(([keys, values]) => {
+                            if(values.cause === "Weapon" && values.victims_loadout_id.toString() === req.toString()){
+                                killCount = killCount + 1;
+                            }
+                            
+                        });
+                    }
+                });
+            });
+            res(null, killCount);
         }
-    });*/
-    res(null, "0");
-        //Filter it here
+    });
 };
 
 let getPopuliarityByID = function(req, res) {
-  /*  getAllWeaponStats(req, function(err, user) {
+    getAllWeaponStats(req, function(err, weapon_info) {
         if (err){
             res(err, null);
         }else{
-            res(null, user);
+            var dict = {};
+            weapon_info.forEach((value) => {
+                value.forEach((values) => {
+                    if(value){
+                        const core_events = values[1].players;
+                        const objectArray = Object.entries(core_events);
+                        objectArray.forEach(([keys, values]) => {
+                            dict[values.loadout_id]  =  1 + (dict[values.loadout_id] || 0);
+                        });
+                    }
+                });
+            });
+                        // Create items array
+            var items = Object.keys(dict).map(function(key) {
+                return [key, dict[key]];
+            });
+            
+            // Sort the array based on the second element
+            items.sort(function(first, second) {
+                return second[1] - first[1];
+            });
+            let position = -1;
+            for(var i=0; i<items.length; i++){
+                console.log(items[i][0].toString() , req.toString())
+                if(items[i][0].toString() === req.toString()){
+                    position = i;
+                }
+            }
+            res(null, position+1);
         }
-    });*/
-    res(null, "0");
-    //Filter it here
+    });
 };
 
 let getAllWeapons = function(req, res) {
@@ -95,7 +135,6 @@ let getAllWeapons = function(req, res) {
             res(null, user);
         }
     });
-    //Filter it here
 };
 
 let getWeaponInfo = function(req, res) {
