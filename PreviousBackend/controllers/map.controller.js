@@ -1,10 +1,21 @@
 'use strict';
 import { addMovementEvent as addMovementEventService, getAverageMapSurvivalTime as getAverageMapSurvivalTimeService, getPopuliarityOfMap as getPopuliarityOfMapService,
     getTopLoadoutByMap as getTopLoadoutByMapService , getTopSkillByMap as getTopSkillByMapService ,
-    getTotalDeathsByMap as getTotalDeathsByMapService, getTotalKillsByMap as getTotalKillsByMapService} from '../services/map.service.js'
+    getTotalDeathsByMap as getTotalDeathsByMapService, getTotalKillsByMap as getTotalKillsByMapService , getAllMaps as getAllMapsService} from '../services/map.service.js'
 
 let addMovementEvent = function(req, res) {
     addMovementEventService(req, function(err, user) {
+        if (err){
+            res(err, null);
+        }else{
+            res(null, user);
+        }
+    });
+};
+
+
+let getAllMaps = function(req, res) {
+    getAllMapsService(req, function(err, user) {
         if (err){
             res(err, null);
         }else{
@@ -73,5 +84,9 @@ let getPopuliarityOfMap = function(req, res) {
     });
 };
 
+let getMapStats = function() {
+    return playerList;
+};
 
-export {addMovementEvent, getTopLoadoutByMap , getTopSkillByMap , getAverageMapSurvivalTime, getTotalKillsByMap, getTotalDeathsByMap , getPopuliarityOfMap};
+
+export {addMovementEvent, getTopLoadoutByMap , getTopSkillByMap , getAverageMapSurvivalTime, getTotalKillsByMap, getTotalDeathsByMap , getPopuliarityOfMap, getAllMaps};

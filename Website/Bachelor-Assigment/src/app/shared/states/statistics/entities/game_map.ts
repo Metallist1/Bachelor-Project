@@ -1,4 +1,5 @@
 export interface GameMap {
   id: string;
-  name: string;
+  map_name: string,
+  map_display_name: string,
 }

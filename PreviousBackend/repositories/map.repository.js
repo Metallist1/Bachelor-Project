@@ -115,5 +115,32 @@ let getPopuliarityOfMap =  async function(user, result) {
 };
 
 
+let getAllMaps =  async function(user, result) {
+    const dbRef = ref(database);
+    get(child(dbRef, `Statistics`)).then((snapshot) => {
+        if (snapshot.exists()) {
+            let all_maps = [];
+            const objectArray = Object.entries( snapshot.val());
 
-export {addMovementEvent, getTopLoadoutByMap , getTopSkillByMap , getAverageMapSurvivalTime, getTotalKillsByMap, getTotalDeathsByMap , getPopuliarityOfMap};
+            objectArray.forEach(([key, value]) => {
+                const mapObject = {
+                    id: value.map_id,
+                    map_name: key,
+                    map_display_name: value.map_name,
+                };
+                all_maps.push(mapObject);
+            });
+            result(null, all_maps);
+        } else {
+            console.log("No data available");
+            result("No data available", null);
+        }
+        }).catch((error) => {
+            console.error(error);
+            result(error, null);
+        });
+};
+
+
+
+export {addMovementEvent, getTopLoadoutByMap , getTopSkillByMap , getAverageMapSurvivalTime, getTotalKillsByMap, getTotalDeathsByMap , getPopuliarityOfMap, getAllMaps};

@@ -1,9 +1,8 @@
 <div> ----- Gun stats -----</div>
 <select [(ngModel)]='selectedWeapon' class="form-select form-select-lg mb-3" aria-label=".form-select-lg example" (ngModelChange)="onChange($event)">
   <option value="0" [ngValue]="0" disabled>Select Gun</option>
-  <option value="1" [ngValue]="1">Select Gun</option>
   <option *ngFor="let weapon of  allWeapons" [ngValue]="weapon.id">
-    {{ weapon.name }}
+    {{ weapon.primary_weapon }}
   </option>
 </select>
 

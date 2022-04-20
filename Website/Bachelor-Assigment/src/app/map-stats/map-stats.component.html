@@ -1,9 +1,8 @@
 <div> ----- Map stats -----</div>
 <select [(ngModel)]='selectedMap' class="form-select form-select-lg mb-3" aria-label=".form-select-lg example" (ngModelChange)="onChange($event)">
   <option value="0" [ngValue]="0" disabled>Select map</option>
-  <option value="1" [ngValue]="1">Test</option>
   <option *ngFor="let map of  allMaps" [ngValue]="map.id">
-    {{ map.name }}
+    {{ map.map_display_name }}
   </option>
 </select>
 

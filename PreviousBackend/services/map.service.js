@@ -1,6 +1,7 @@
 'use strict';
 import { addMovementEvent as addMovementEventRepository, getAverageMapSurvivalTime as getAverageMapSurvivalTimeRepository, getPopuliarityOfMap as getPopuliarityOfMapRepository,
-getTopLoadoutByMap as getTopLoadoutByMapRepository , getTopSkillByMap as getTopSkillByMapRepository , getTotalDeathsByMap as getTotalDeathsByMapRepository, getTotalKillsByMap as getTotalKillsByMapRepository} from '../repositories/map.repository.js'
+getTopLoadoutByMap as getTopLoadoutByMapRepository , getTopSkillByMap as getTopSkillByMapRepository , getTotalDeathsByMap as getTotalDeathsByMapRepository,
+ getTotalKillsByMap as getTotalKillsByMapRepository , getAllMaps as getAllMapsRepository} from '../repositories/map.repository.js'
 
 let addMovementEvent = function(req, res) {
     addMovementEventRepository(req, function(err, user) {
@@ -72,8 +73,18 @@ let getPopuliarityOfMap = function(req, res) {
     });
 };
 
+let getAllMaps = function(req, res) {
+    getAllMapsRepository(req, function(err, user) {
+        if (err){
+            res(err, null);
+        }else{
+            res(null, user);
+        }
+    });
+};
 
-export {addMovementEvent, getTopLoadoutByMap , getTopSkillByMap , getAverageMapSurvivalTime, getTotalKillsByMap, getTotalDeathsByMap , getPopuliarityOfMap};
+
+export {addMovementEvent, getTopLoadoutByMap , getTopSkillByMap , getAverageMapSurvivalTime, getTotalKillsByMap, getTotalDeathsByMap , getPopuliarityOfMap, getAllMaps};
  //  addEvent,
 // Get most popular loadout by map
 // Get most popular skill by map.

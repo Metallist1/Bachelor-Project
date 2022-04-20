@@ -6,9 +6,9 @@ import { login, addPlayer, disconnectPlayer,getAllPlayersOnline,register } from 
 
 import { addCoreEvent, addEndGameStats, getBulletsFired, getMostPopularMap, getMostPopularWeapon, getTopPlayers, getTopStats, getTotalSteps } from './controllers/topstats.controller.js'
 
-import { addMinorEvent, getAverageHitMiss, getPopuliarityByID , getTotalDeathsByID, getTotalKillsByID } from './controllers/weapons.controller.js'
+import { addMinorEvent, getAllWeapons, getWeaponStatistics, getAverageHitMiss, getPopuliarityByID , getTotalDeathsByID, getTotalKillsByID } from './controllers/weapons.controller.js'
 
-import { addMovementEvent, getAverageMapSurvivalTime, getPopuliarityOfMap, getTopLoadoutByMap ,getTopSkillByMap ,getTotalDeathsByMap, getTotalKillsByMap } from './controllers/map.controller.js'
+import { addMovementEvent, getAllMaps, getAverageMapSurvivalTime, getPopuliarityOfMap, getTopLoadoutByMap ,getTopSkillByMap ,getTotalDeathsByMap, getTotalKillsByMap } from './controllers/map.controller.js'
 
 // Express
 
@@ -102,15 +102,30 @@ server.listen(PORT, function (err) {
 
 //Socket IO
 getAllPlayersOnline().subscribe((data) => {
-    console.log(data);
     io.emit("current_player_count", data.length);
-  });
+});
 
 io.on("connection", function (socket) {
+
     console.log("Socket : " + socket.id + " has connected");
-        // socket.emit("all_maps", user);
-// socket.emit("all_weapons", user);
-  //  socket.emit("current_player_count", getAllPlayersOnline());
+    getAllMaps(null, function(err, allMaps) {
+        if (err){
+            console.log(err);
+            socket.emit("get_user_error", err);
+        }
+        else{
+            socket.emit("all_maps", allMaps);
+        }
+    });
+    getAllWeapons(null, function(err, all_weapons) {
+        if (err){
+            console.log(err);
+            socket.emit("get_user_error", err);
+        }
+        else{
+            socket.emit("all_weapons", all_weapons);
+        }
+    });
 // socket.emit("current_step_count", user);
 // socket.emit("current_bullet_count", user);
 // socket.emit("general_statistics", user);
@@ -151,7 +166,11 @@ io.on("connection", function (socket) {
             else{
                 console.dir(user, { depth: null }); // `depth: null` ensures unlimited recursion
                 console.log("Registered");
-               /* addPlayer(user, function(err) {
+                const postData = {
+                    user: user,
+                    socketID: socket.id
+                };
+                addPlayer(postData, function(err) {
                     if (err){
                         console.log(err);
                     }
@@ -159,26 +178,9 @@ io.on("connection", function (socket) {
                         io.emit("all_users", getAllPlayersOnline());
                     }
                 });
-                socket.emit("logged_in", user);*/
+                socket.emit("logged_in", user);
             }
         });
-      /*  register(message, function(err, user) {
-            if (err){
-                console.log(err);
-                socket.emit("get_user_error", err);
-            }
-            else{
-                addPlayer(user, function(err) {
-                    if (err){
-                        console.log(err);
-                    }
-                    else{
-                        io.emit("all_users", getAllPlayersOnline());
-                    }
-                });
-                socket.emit("registed_user", user);
-            }
-        });*/
     });
 
 
@@ -196,15 +198,17 @@ io.on("connection", function (socket) {
     });
 
     socket.on('get_statistics_by_weapon_id', (loadoutID) => {
-        socket.emit("weapon_statistics", {
-            weapon_id: loadoutID.id,
-            weapon_name: "Test weapon",
-            hit_rate: "2.3",
-            total_kills: "25",
-            total_deaths: "2",
-            populiarity: "-1",
+        console.log(loadoutID);
+        getWeaponStatistics(loadoutID.id, function(err, weapon_stat) {
+            if (err){
+                console.log(err);
+                socket.emit("get_user_error", err);
+            }
+            else{
+                console.log(weapon_stat);
+                socket.emit("weapon_statistics", weapon_stat);
+            }
         });
-
     });
 
     socket.on("disconnect", () => {
