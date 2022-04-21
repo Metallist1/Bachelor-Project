@@ -32,7 +32,6 @@ let getTotalKillsByID = function(req, res) {
             res(null, user);
         }
     });
-        //Filter it here
 };
 
 let getTotalDeathsByID = function(req, res) {
@@ -43,7 +42,6 @@ let getTotalDeathsByID = function(req, res) {
             res(null, user);
         }
     });
-        //Filter it here
 };
 
 let getPopuliarityByID = function(req, res) {

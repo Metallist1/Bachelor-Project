@@ -117,7 +117,6 @@ let getPopuliarityByID = function(req, res) {
             });
             let position = -1;
             for(var i=0; i<items.length; i++){
-                console.log(items[i][0].toString() , req.toString())
                 if(items[i][0].toString() === req.toString()){
                     position = i;
                 }

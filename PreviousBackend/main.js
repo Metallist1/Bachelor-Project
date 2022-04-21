@@ -8,7 +8,7 @@ import { addCoreEvent, addEndGameStats, getBulletsFired, getMostPopularMap, getM
 
 import { addMinorEvent, getAllWeapons, getWeaponStatistics, getAverageHitMiss, getPopuliarityByID , getTotalDeathsByID, getTotalKillsByID } from './controllers/weapons.controller.js'
 
-import { addMovementEvent, getAllMaps, getAverageMapSurvivalTime, getPopuliarityOfMap, getTopLoadoutByMap ,getTopSkillByMap ,getTotalDeathsByMap, getTotalKillsByMap } from './controllers/map.controller.js'
+import { addMovementEvent, getAllMaps, getMapStatistics, getAverageMapSurvivalTime, getPopuliarityOfMap, getTopLoadoutByMap ,getTopSkillByMap ,getTotalDeathsByMap, getTotalKillsByMap } from './controllers/map.controller.js'
 
 // Express
 
@@ -185,27 +185,24 @@ io.on("connection", function (socket) {
 
 
     socket.on('get_statistics_by_map_id', (mapID) => {
-        socket.emit("map_statistics", {  map_id: mapID.id,
-            map_name: "Test",
-            total_deaths_by_env: "4",
-            total_deaths_by_players: "14",
-            total_kills: "25",
-            popular_loadout: "Weapon",
-            popular_skill: "Skiller",
-            average_survival_time: "2.20",
-            populiarity: "1",
-          });
+        getMapStatistics(mapID.id, function(err, map_stat) {
+            if (err){
+                console.log(err);
+                socket.emit("get_user_error", err);
+            }
+            else{
+                socket.emit("map_statistics", map_stat);
+            }
+        });
     });
 
     socket.on('get_statistics_by_weapon_id', (loadoutID) => {
-        console.log(loadoutID);
         getWeaponStatistics(loadoutID.id, function(err, weapon_stat) {
             if (err){
                 console.log(err);
                 socket.emit("get_user_error", err);
             }
             else{
-                console.log(weapon_stat);
                 socket.emit("weapon_statistics", weapon_stat);
             }
         });

@@ -19,101 +19,48 @@ let addMovementEvent =  async function(user, result) {
 };
 
 
-let getTopLoadoutByMap =  async function(user, result) {
+let getMapStatistics =  async function(map_id, result) {
+        const dbRef = ref(database);
+        get(child(dbRef, `Statistics`)).then((snapshot) => {
+            if (snapshot.exists()) {
+                let specificMap = null;
+                const objectArray = Object.entries( snapshot.val());
+                objectArray.forEach(([key, value]) => {
+                    if(value.map_id.toString() == map_id.toString()){
+                        specificMap = value;
+                    }
+                });
+                result(null, specificMap);
+            } else {
+                console.log("No data available");
+                result("No data available", null);
+            }
+            }).catch((error) => {
+                console.error(error);
+                result(error, null);
+            });
+};
+
+let getFullMapStatistics =  async function(map_id, result) {
     const dbRef = ref(database);
-    get(child(dbRef, `Users`)).then((snapshot) => {
+    get(child(dbRef, `Statistics`)).then((snapshot) => {
         if (snapshot.exists()) {
-            console.log(snapshot.val());
-            result(null, snapshot.val());
+            let fullStats = [];
+            const objectArray = Object.entries( snapshot.val());
+
+            objectArray.forEach(([key, value]) => {
+                fullStats.push( {id: value.map_id, matches: value.matches});
+            });
+            result(null, fullStats);
         } else {
             console.log("No data available");
+            result("No data available", null);
         }
         }).catch((error) => {
             console.error(error);
             result(error, null);
         });
 };
-
-
-let getTopSkillByMap =  async function(user, result) {
-    const dbRef = ref(database);
-    get(child(dbRef, `Users`)).then((snapshot) => {
-        if (snapshot.exists()) {
-            console.log(snapshot.val());
-            result(null, snapshot.val());
-        } else {
-            console.log("No data available");
-        }
-        }).catch((error) => {
-            console.error(error);
-            result(error, null);
-        });
-};
-
-
-let getAverageMapSurvivalTime =  async function(user, result) {
-    const dbRef = ref(database);
-    get(child(dbRef, `Users`)).then((snapshot) => {
-        if (snapshot.exists()) {
-            console.log(snapshot.val());
-            result(null, snapshot.val());
-        } else {
-            console.log("No data available");
-        }
-        }).catch((error) => {
-            console.error(error);
-            result(error, null);
-        });
-};
-
-
-let getTotalKillsByMap =  async function(user, result) {
-    const dbRef = ref(database);
-    get(child(dbRef, `Users`)).then((snapshot) => {
-        if (snapshot.exists()) {
-            console.log(snapshot.val());
-            result(null, snapshot.val());
-        } else {
-            console.log("No data available");
-        }
-        }).catch((error) => {
-            console.error(error);
-            result(error, null);
-        });
-};
-
-
-let getTotalDeathsByMap =  async function(user, result) {
-    const dbRef = ref(database);
-    get(child(dbRef, `Users`)).then((snapshot) => {
-        if (snapshot.exists()) {
-            console.log(snapshot.val());
-            result(null, snapshot.val());
-        } else {
-            console.log("No data available");
-        }
-        }).catch((error) => {
-            console.error(error);
-            result(error, null);
-        });
-};
-
-
-let getPopuliarityOfMap =  async function(user, result) {
-    const dbRef = ref(database);
-    get(child(dbRef, `Users`)).then((snapshot) => {
-        if (snapshot.exists()) {
-            console.log(snapshot.val());
-            result(null, snapshot.val());
-        } else {
-            console.log("No data available");
-        }
-        }).catch((error) => {
-            console.error(error);
-            result(error, null);
-        });
-};
-
 
 let getAllMaps =  async function(user, result) {
     const dbRef = ref(database);
@@ -142,5 +89,35 @@ let getAllMaps =  async function(user, result) {
 };
 
 
+let getSkillName =  async function(skill_id, result) {
+    const dbRef = ref(database);
+    get(child(dbRef, `Skills/` + skill_id)).then((snapshot) => {
+        if (snapshot.exists()) {
+            result(null, snapshot.val().skill_name);
+        } else {
+            console.log("No data available");
+            result("No data available", null);
+        }
+        }).catch((error) => {
+            console.error(error);
+            result(error, null);
+        });
+};
 
-export {addMovementEvent, getTopLoadoutByMap , getTopSkillByMap , getAverageMapSurvivalTime, getTotalKillsByMap, getTotalDeathsByMap , getPopuliarityOfMap, getAllMaps};
+
+let getWeaponName =  async function(weapon_id, result) {
+    const dbRef = ref(database);
+    get(child(dbRef, `Loadouts/` + weapon_id)).then((snapshot) => {
+        if (snapshot.exists()) {
+            result(null, snapshot.val().primary_weapon);
+        } else {
+            console.log("No data available");
+            result("No data available", null);
+        }
+        }).catch((error) => {
+            console.error(error);
+            result(error, null);
+        });
+};
+
+export {addMovementEvent, getAllMaps, getMapStatistics , getFullMapStatistics, getWeaponName , getSkillName};
