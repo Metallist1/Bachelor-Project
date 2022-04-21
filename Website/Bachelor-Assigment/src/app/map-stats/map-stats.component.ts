@@ -14,6 +14,8 @@ import {GetMapStatistic} from "../shared/states/statistics/statistics.action";
 export class MapStatsComponent implements OnInit {
 
   selectedMap = 0;
+  // @ts-ignore
+  averageSurvivalTime: Date ;
 
   // @ts-ignore
   @Select(StatisticsState.getAllMaps) maps: Observable<GameMap[]>;
@@ -37,6 +39,7 @@ export class MapStatsComponent implements OnInit {
     this.statistic.subscribe( (data) => {
       if(data){
         this.mapStatistic = data;
+        this.averageSurvivalTime = new Date(Math.round(Number(data.average_survival_time)));
       }
     });
   }

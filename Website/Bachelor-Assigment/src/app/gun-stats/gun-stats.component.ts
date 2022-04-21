@@ -42,7 +42,7 @@ export class GunStatsComponent implements OnInit {
         // @ts-ignore
         this.hitRate = data.hit_rate * 100;
         // @ts-ignore
-        this.kd = data.total_deaths / data.total_kills;
+        this.kd = (data.total_deaths / data.total_kills).toFixed(2);
       }
     });
   }
