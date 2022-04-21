@@ -46,14 +46,36 @@ let addEndGameStats =  async function(user, result) {
         });
 };
 
-let getTopStats =  async function(user, result) {
+let getAllMatchStats =  async function(user, result) {
     const dbRef = ref(database);
-    get(child(dbRef, `Users`)).then((snapshot) => {
+        get(child(dbRef, `Statistics`)).then((snapshot) => {
         if (snapshot.exists()) {
-            console.log(snapshot.val());
-            result(null, snapshot.val());
+            let matches = [];
+            const objectArray = Object.entries( snapshot.val());
+    
+            objectArray.forEach(([key, value]) => {
+                matches.push( Object.entries( value.matches));
+            });
+            result(null, matches);
         } else {
             console.log("No data available");
+            result("No data available", null);
+        }
+        }).catch((error) => {
+            console.error(error);
+            result(error, null);
+        });
+
+};
+
+let getSkillName =  async function(skill_id, result) {
+    const dbRef = ref(database);
+    get(child(dbRef, `Skills/` + skill_id)).then((snapshot) => {
+        if (snapshot.exists()) {
+            result(null, snapshot.val().skill_name);
+        } else {
+            console.log("No data available");
+            result("No data available", null);
         }
         }).catch((error) => {
             console.error(error);
@@ -62,14 +84,14 @@ let getTopStats =  async function(user, result) {
 };
 
 
-let getTopPlayers =  async function(user, result) {
+let getWeaponName =  async function(weapon_id, result) {
     const dbRef = ref(database);
-    get(child(dbRef, `Users`)).then((snapshot) => {
+    get(child(dbRef, `Loadouts/` + weapon_id)).then((snapshot) => {
         if (snapshot.exists()) {
-            console.log(snapshot.val());
-            result(null, snapshot.val());
+            result(null, snapshot.val().primary_weapon);
         } else {
             console.log("No data available");
+            result("No data available", null);
         }
         }).catch((error) => {
             console.error(error);
@@ -77,69 +99,4 @@ let getTopPlayers =  async function(user, result) {
         });
 };
 
-
-let getMostPopularMap =  async function(user, result) {
-    const dbRef = ref(database);
-    get(child(dbRef, `Users`)).then((snapshot) => {
-        if (snapshot.exists()) {
-            console.log(snapshot.val());
-            result(null, snapshot.val());
-        } else {
-            console.log("No data available");
-        }
-        }).catch((error) => {
-            console.error(error);
-            result(error, null);
-        });
-};
-
-
-let getMostPopularWeapon =  async function(user, result) {
-    const dbRef = ref(database);
-    get(child(dbRef, `Users`)).then((snapshot) => {
-        if (snapshot.exists()) {
-            console.log(snapshot.val());
-            result(null, snapshot.val());
-        } else {
-            console.log("No data available");
-        }
-        }).catch((error) => {
-            console.error(error);
-            result(error, null);
-        });
-};
-
-
-let getTotalSteps =  async function(user, result) {
-    const dbRef = ref(database);
-    get(child(dbRef, `Users`)).then((snapshot) => {
-        if (snapshot.exists()) {
-            console.log(snapshot.val());
-            result(null, snapshot.val());
-        } else {
-            console.log("No data available");
-        }
-        }).catch((error) => {
-            console.error(error);
-            result(error, null);
-        });
-};
-
-
-let getBulletsFired =  async function(user, result) {
-    const dbRef = ref(database);
-    get(child(dbRef, `Users`)).then((snapshot) => {
-        if (snapshot.exists()) {
-            console.log(snapshot.val());
-            result(null, snapshot.val());
-        } else {
-            console.log("No data available");
-        }
-        }).catch((error) => {
-            console.error(error);
-            result(error, null);
-        });
-};
-
-
-export {addCoreEvent, addEndGameStats, getTopStats , getTopPlayers , getMostPopularMap,getMostPopularWeapon, getTotalSteps , getBulletsFired};
+export {addCoreEvent, addEndGameStats, getAllMatchStats,  getWeaponName , getSkillName};

@@ -4,8 +4,8 @@ import {
   GetMapStatistic,
   GetWeaponStatistic, Login, Register,
   SetUpAllMaps,
-  SetUpAllWeapons, SetUpBullets, SetUpCurrentPlayers,
-  SetUpGeneralStats, SetUpMapsStats, SetUpSteps, SetUpWeaponStats
+  SetUpAllWeapons, SetUpCurrentPlayers,
+  SetUpGeneralStats, SetUpMapsStats, SetUpWeaponStats
 } from "./statistics.action";
 import {StatisticsService} from "./statistics.service";
 import {GameMap} from "./entities/game_map";
@@ -20,8 +20,6 @@ export class StatisticsStateModel {
   mapStats: MapStatisticObject | undefined ;
   weaponStats: WeaponStatisticObject | undefined ;
   playerCount: number | undefined;
-  stepCount: number | undefined;
-  bulletShot: number | undefined;
   // @ts-ignore
   generalStats: GeneralStatisticsObject ;
 }
@@ -33,9 +31,9 @@ export class StatisticsStateModel {
     mapStats: undefined,
     weaponStats: undefined,
     playerCount: 0,
-    stepCount: 0,
-    bulletShot: 0,
     generalStats: {
+      current_step_count: "0",
+      current_bullet_count: "0",
       most_common_skill: "None",
       most_user_loadout:"None",
       favorite_map: "De_Dust_2"
@@ -71,16 +69,6 @@ export class StatisticsState {
         console.log(data);
         this.store.dispatch(new SetUpCurrentPlayers(data as number));
       });
-    statisticsService.getSteps().subscribe(
-      (data) => {
-        console.log(data);
-        this.store.dispatch(new SetUpSteps(data as number));
-      });
-    statisticsService.getBulletCounts().subscribe(
-      (data) => {
-        console.log(data);
-        this.store.dispatch(new SetUpBullets(data as number));
-      });
     statisticsService.getGeneralStats().subscribe(
       (data) => {
         console.log(data);
@@ -113,14 +101,6 @@ export class StatisticsState {
   @Selector()
   static getPlayersOnline(state: StatisticsStateModel): any {
     return state.playerCount;
-  }
-  @Selector()
-  static getStepCount(state: StatisticsStateModel): any {
-    return state.stepCount;
-  }
-  @Selector()
-  static getBulletCount(state: StatisticsStateModel): any {
-    return state.bulletShot;
   }
   @Selector()
   static getGeneralStats(state: StatisticsStateModel): any {
@@ -194,26 +174,6 @@ export class StatisticsState {
     setState({
       ...state,
       playerCount: players,
-    });
-  }
-
-  @Action(SetUpBullets)
-  setUpBullets({getState, setState}: StateContext<StatisticsStateModel>,
-             { bullets }: SetUpBullets): any {
-    const state = getState();
-    setState({
-      ...state,
-      bulletShot: bullets,
-    });
-  }
-
-  @Action(SetUpSteps)
-  setUpSteps({getState, setState}: StateContext<StatisticsStateModel>,
-             { steps }: SetUpSteps): any {
-    const state = getState();
-    setState({
-      ...state,
-      stepCount: steps,
     });
   }
 

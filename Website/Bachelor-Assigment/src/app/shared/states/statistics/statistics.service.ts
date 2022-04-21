@@ -37,14 +37,6 @@ export class StatisticsService {
     return this.socket.fromEvent('current_player_count');
   }
 
-  getSteps() {
-    return this.socket.fromEvent('current_step_count');
-  }
-
-  getBulletCounts() {
-    return this.socket.fromEvent('current_bullet_count');
-  }
-
   getGeneralStats() {
     return this.socket.fromEvent('general_statistics');
   }

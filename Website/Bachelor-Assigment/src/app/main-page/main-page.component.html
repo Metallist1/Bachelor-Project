@@ -10,12 +10,12 @@
 <div >
   <div> ----- General stats -----</div>
   <div>Total Players Online: {{players}} </div>
-  <div>Total steps taken: {{steps}} </div>
-  <div>Bullets shot: {{bullets}} </div>
   <div *ngIf="generalStat">
-  <div>Most Favorite Map: {{generalStat.favorite_map}}</div>
-  <div>Most Used Loadout: {{generalStat.most_user_loadout}}</div>
-  <div>Most Most common skill: {{generalStat.most_common_skill}}</div>
+    <div>Total steps taken: {{generalStat.current_step_count}} </div>
+    <div>Bullets shot: {{generalStat.current_bullet_count}} </div>
+    <div>Most Favorite Map: {{generalStat.favorite_map}}</div>
+    <div>Most Used Loadout: {{generalStat.most_user_loadout}}</div>
+    <div>Most Most common skill: {{generalStat.most_common_skill}}</div>
   </div>
 </div>
 

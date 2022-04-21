@@ -4,7 +4,7 @@ const require = createRequire(import.meta.url);
 //Controllers
 import { login, addPlayer, disconnectPlayer,getAllPlayersOnline,register } from './controllers/user.controller.js'
 
-import { addCoreEvent, addEndGameStats, getBulletsFired, getMostPopularMap, getMostPopularWeapon, getTopPlayers, getTopStats, getTotalSteps } from './controllers/topstats.controller.js'
+import { addCoreEvent, addEndGameStats, getBulletsFired, getMostPopularMap, getMostPopularWeapon, getTopStats, getTotalSteps } from './controllers/topstats.controller.js'
 
 import { addMinorEvent, getAllWeapons, getWeaponStatistics, getAverageHitMiss, getPopuliarityByID , getTotalDeathsByID, getTotalKillsByID } from './controllers/weapons.controller.js'
 
@@ -126,9 +126,17 @@ io.on("connection", function (socket) {
             socket.emit("all_weapons", all_weapons);
         }
     });
-// socket.emit("current_step_count", user);
-// socket.emit("current_bullet_count", user);
-// socket.emit("general_statistics", user);
+
+    getTopStats(null, function(err, general_statistics) {
+        if (err){
+            console.log(err);
+            socket.emit("get_user_error", err);
+        }
+        else{
+            socket.emit("general_statistics", general_statistics);
+        }
+    });
+
     socket.on('login', (message) => {
         console.log(message);
         login(message, function(err, user) {

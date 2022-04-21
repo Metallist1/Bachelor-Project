@@ -40,16 +40,6 @@ export class SetUpCurrentPlayers {
   constructor(public players: number) {}
 }
 
-export class SetUpSteps {
-  static readonly type = '[Auth] SetUpSteps';
-  constructor(public steps: number) {}
-}
-
-export class SetUpBullets {
-  static readonly type = '[Auth] SetUpBullets';
-  constructor(public bullets: number) {}
-}
-
 export class SetUpGeneralStats {
   static readonly type = '[Auth] SetUpGeneralStats';
   constructor(public generalStat: GeneralStatisticsObject) {}
