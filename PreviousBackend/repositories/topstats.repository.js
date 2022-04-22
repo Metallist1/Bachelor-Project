@@ -12,23 +12,24 @@ onValue(starCountRef, (snapshot) => {
 });
 
 */
-let addCoreEvent =  async function(user, result) {
-    console.log
-    const dbRef = ref(database);
-    get(child(dbRef, `Users`)).then((snapshot) => {
-        if (snapshot.exists()) {
-            console.log(snapshot.val());
-            snapshot.val().forEach(element => {
-                console.log(element);
-            });
-           // result(null, snapshot.val());
-        } else {
-            console.log("No data available");
-        }
-        }).catch((error) => {
-            console.error(error);
-            result(error, null);
-        });
+let addCoreEvent =  async function(event, result) {
+    const postData = {
+        killers_loadout_id: event.killers_loadout_id,
+        player_id: event.player_id,
+        victim_id: event.victim_id,
+        victims_life_end: event.victims_life_end,
+        victims_life_start: event.victims_life_start,
+        victims_loadout_id: event.victims_loadout_id,
+        cause: event.cause
+    };
+    
+    // Get a key for a new Post.
+   // const newPostKey = push(child(dbRef, 'Users')).key;
+    // Write the new post's data simultaneously in the posts list and the user's post list.
+    const updates = {};
+    updates['/Statistics/' + event.map+'/matches/' + event.match_id + "/core_events/" + event.id] = postData;
+    update(dbRef, updates)
+    result(null, postData);
 };
 
 let addEndGameStats =  async function(user, result) {

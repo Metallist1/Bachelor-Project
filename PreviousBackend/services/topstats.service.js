@@ -24,12 +24,12 @@ let addEndGameStats = function(req, res) {
 }; 
 
 let getMostCommonSkill = function(req, res) {
-    getAllMatchStats(req, function(err, user) {
+    getAllMatchStats(req, function(err, match_info) {
         if (err){
             res(err, null);
         }else{
             var dict = {};
-            weapon_info.forEach((value) => {
+            match_info.forEach((value) => {
                 value.forEach((values) => {
                     if(value){
                         const core_events = values[1].players;
@@ -75,12 +75,12 @@ let getMostPopularMap = function(req, res) {
 };
 
 let getMostPopularWeapon = function(req, res) {
-   getAllMatchStats(req, function(err, user) {
+   getAllMatchStats(req, function(err, match_info) {
         if (err){
             res(err, null);
         }else{
             var dict = {};
-            weapon_info.forEach((value) => {
+            match_info.forEach((value) => {
                 value.forEach((values) => {
                     if(value){
                         const core_events = values[1].players;
