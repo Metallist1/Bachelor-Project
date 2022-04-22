@@ -100,4 +100,24 @@ let getWeaponName =  async function(weapon_id, result) {
         });
 };
 
-export {addCoreEvent, addEndGameStats, getAllMatchStats,  getWeaponName , getSkillName};
+let getFullMapStatistics =  async function(map_id, result) {
+    const dbRef = ref(database);
+    get(child(dbRef, `Statistics`)).then((snapshot) => {
+        if (snapshot.exists()) {
+            let fullStats = [];
+            const objectArray = Object.entries( snapshot.val());
+
+            objectArray.forEach(([key, value]) => {
+                fullStats.push( {id: value.map_id,name_of_map:value.map_name, matches: value.matches});
+            });
+            result(null, fullStats);
+        } else {
+            console.log("No data available");
+            result("No data available", null);
+        }
+        }).catch((error) => {
+            console.error(error);
+            result(error, null);
+        });
+};
+export {addCoreEvent, addEndGameStats, getAllMatchStats,  getWeaponName , getSkillName , getFullMapStatistics};

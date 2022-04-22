@@ -1,6 +1,6 @@
 
 'use strict';
-import { getAllMatchStats, addCoreEvent as addCoreEventRepository , addEndGameStats as addEndGameStatsRepository , getSkillName , getWeaponName} from '../repositories/topstats.repository.js'
+import { getAllMatchStats, addCoreEvent as addCoreEventRepository , addEndGameStats as addEndGameStatsRepository , getSkillName , getWeaponName, getFullMapStatistics} from '../repositories/topstats.repository.js'
 
 let addCoreEvent = function(req, res) {
     addCoreEventRepository(req, function(err, user) {
@@ -64,14 +64,34 @@ let getMostCommonSkill = function(req, res) {
 };
 
 let getMostPopularMap = function(req, res) {
-  /*  getAllMatchStats(req, function(err, user) {
+    getFullMapStatistics(req, function(err, map_info) {
         if (err){
             res(err, null);
         }else{
-            res(null, user);
+            var dict = {};
+            map_info.forEach((value) => {
+                dict[value.id]  =  value.matches.length;
+            });
+                        // Create items array
+            var items = Object.keys(dict).map(function(key) {
+                return [key, dict[key]];
+            });
+            
+            // Sort the array based on the second element
+            items.sort(function(first, second) {
+                return second[1] - first[1];
+            });
+            let top_map = -1;
+            top_map = items[0][0];
+            let map_name = "none";
+            map_info.forEach((value) => {
+                if(value.id == top_map){
+                    map_name = value.name_of_map;
+                }
+            });
+            res(null, map_name);
         }
-    }); */
-    res(null, "Test map");
+    });
 };
 
 let getMostPopularWeapon = function(req, res) {
