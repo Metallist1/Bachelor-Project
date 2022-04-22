@@ -32,19 +32,17 @@ let addCoreEvent =  async function(event, result) {
     result(null, postData);
 };
 
-let addEndGameStats =  async function(user, result) {
-    const dbRef = ref(database);
-    get(child(dbRef, `Users`)).then((snapshot) => {
-        if (snapshot.exists()) {
-            console.log(snapshot.val());
-            result(null, snapshot.val());
-        } else {
-            console.log("No data available");
-        }
-        }).catch((error) => {
-            console.error(error);
-            result(error, null);
-        });
+let addEndGameStats =  async function(event, result) {
+
+    // Get a key for a new Post.
+   // const newPostKey = push(child(dbRef, 'Users')).key;
+    // Write the new post's data simultaneously in the posts list and the user's post list.
+    const updates = {};
+    
+    updates['/Statistics/' + event.map+'/matches/' + event.match_id + "/plaers/"] = event.player_final_stats;
+    updates['/Statistics/' + event.map+'/matches/' + event.match_id + "/round_end_time/"] = event.time;
+    update(dbRef, updates)
+    result(null, postData);
 };
 
 let getAllMatchStats =  async function(user, result) {
