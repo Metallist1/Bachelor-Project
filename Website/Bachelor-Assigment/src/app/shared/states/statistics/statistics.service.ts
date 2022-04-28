@@ -1,12 +1,12 @@
 import {Injectable} from "@angular/core";
-import {Socket} from "ngx-socket-io";
+import {SocketOne, SocketTwo} from "../../../app.module";
 
 @Injectable({
   providedIn: 'root',
 })
 export class StatisticsService {
 
-  constructor(private socket: Socket) {
+  constructor(private socket: SocketOne, private userSocket: SocketTwo) {
   }
 
   getMapStatistic(map_id: number) {
@@ -34,7 +34,7 @@ export class StatisticsService {
   }
 
   getPlayersOn() {
-    return this.socket.fromEvent('current_player_count');
+    return this.userSocket.fromEvent('current_player_count');
   }
 
   getGeneralStats() {
@@ -42,10 +42,10 @@ export class StatisticsService {
   }
 
   login(username: string, password: string) {
-    this.socket.emit('login', {username: username, password: password});
+    this.userSocket.emit('login', {username: username, password: password});
   }
 
   register(username: string, password: string) {
-    this.socket.emit('register', {username: username, password: password});
+    this.userSocket.emit('register', {username: username, password: password});
   }
 }

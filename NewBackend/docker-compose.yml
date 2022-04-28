@@ -1,0 +1,62 @@
+version: '3.4'
+
+services:
+  records:
+    image: records
+    build:
+      context: microservices/RecordingService
+      dockerfile: ./Dockerfile
+    environment:
+        NODE_ENV: production
+        PORT: 3001
+    ports:
+        - 3001:3001
+    expose:
+        - 3001
+
+  statistics:
+    image: statistics
+    build:
+      context: microservices/StatisticsService
+      dockerfile: ./Dockerfile
+    environment:
+        NODE_ENV: production
+        PORT: 3000
+    ports:
+        - 3000:3000
+    expose:
+        - 3000
+
+  users:
+    image: users
+    depends_on:
+      - mysql
+    build:
+      context: microservices/UsersService
+      dockerfile: ./Dockerfile
+    environment:
+        NODE_ENV: production
+        PORT: 3002
+        DB_HOST: mysql
+        DB_USER: testuser
+        DB_PASSWORD: testpassword
+        DB_NAME: backend
+        DB_PORT: 3306
+    ports:
+        - 3002:3002
+    expose:
+        - 3002
+
+  mysql:
+    image: mysql
+    restart: always
+    container_name: db-mysql
+    ports:
+      - 3307:3306
+    environment:
+      MYSQL_DATABASE: backend
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_USER: testuser
+      MYSQL_PASSWORD: testpassword
+    volumes:
+      - ./dump:/docker-entrypoint-initdb.d
