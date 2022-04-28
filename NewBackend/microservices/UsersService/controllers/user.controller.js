@@ -1,6 +1,6 @@
 'use strict';
 import { login as serviceLogin, addPlayer as serviceAddPlayer, register as serviceRegister,
-     disconnectPlayer as serviceDisconnect, getAllPlayersOnline as getAllPlayers } from '../services/user.service.js'
+     disconnectPlayer as serviceDisconnect } from '../services/user.service.js'
 
 let login = function(req, res) {
     serviceLogin(req, function(err, user) {
@@ -39,8 +39,4 @@ let disconnectPlayer = function(req, res) {
 
 };
 
-let getAllPlayersOnline = function() {
-    return getAllPlayers();
-};
-
-export {login , register , getAllPlayersOnline, disconnectPlayer , addPlayer};
+export {login , register , disconnectPlayer , addPlayer};

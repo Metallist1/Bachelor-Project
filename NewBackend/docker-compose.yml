@@ -16,11 +16,17 @@ services:
 
   statistics:
     image: statistics
+    depends_on:
+      - mysql
+      - rabbitMQStart
+    networks:
+      - rabbit
     build:
       context: microservices/StatisticsService
       dockerfile: ./Dockerfile
     environment:
         NODE_ENV: production
+        AMQP_URL: amqp://guest:guest@rabbitmqhost
         PORT: 3000
     ports:
         - 3000:3000
@@ -31,9 +37,13 @@ services:
     image: users
     depends_on:
       - mysql
+      - rabbitMQStart
     build:
       context: microservices/UsersService
       dockerfile: ./Dockerfile
+    networks:
+      - rabbit
+      - mysql
     environment:
         NODE_ENV: production
         PORT: 3002
@@ -42,15 +52,30 @@ services:
         DB_PASSWORD: testpassword
         DB_NAME: backend
         DB_PORT: 3306
+        AMQP_URL: amqp://guest:guest@rabbitmqhost
     ports:
         - 3002:3002
     expose:
         - 3002
 
+  rabbitMQStart:
+    image: startup
+    depends_on:
+      - rabbitmq
+    networks:
+      - rabbit
+    build:
+      context: rabbitMQ
+      dockerfile: ./Dockerfile
+    environment:
+        AMQP_URL: amqp://guest:guest@rabbitmqhost
+
   mysql:
     image: mysql
     restart: always
     container_name: db-mysql
+    networks:
+        - mysql
     ports:
       - 3307:3306
     environment:
@@ -60,3 +85,20 @@ services:
       MYSQL_PASSWORD: testpassword
     volumes:
       - ./dump:/docker-entrypoint-initdb.d
+
+  rabbitmq3:
+    image: rabbitmq:3.9-management
+    hostname: rabbitmqhost
+    container_name: rabbitmq
+    ports:
+        - 5672:5672
+        - 15672:15672
+    volumes:
+        - ~/.docker-conf/rabbitmq/data/:/var/lib/rabbitmq/
+        - ~/.docker-conf/rabbitmq/log/:/var/log/rabbitmq
+    networks:
+        - rabbit
+
+networks:
+  rabbit:
+  mysql:

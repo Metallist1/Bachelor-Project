@@ -2,9 +2,7 @@
 'use strict';
 import { login as repositoryLogin, register as repositoryRegister } from '../repositories/user.repositories.js'
 
-import { BehaviorSubject} from "rxjs";
-
-const playerList = new BehaviorSubject([]);
+import { publishToChannel } from './rabbitmqHelper.js'
 
 let login = function(req, res) {
     repositoryLogin(req, function(err, user) {
@@ -30,29 +28,13 @@ let register = function(req, res) {
 
 
 let addPlayer = function(req, res) {
-    const existingUser = playerList.value.find(
-        (u) => u.socketID === req.socketID,
-      );
-      if (!existingUser) {
-        console.log("User already added")
-      } else {
-        console.log("New user added to behavior")
-      }
-      playerList.next([
-        ...playerList.value,
-        req,
-      ]);
+    publishToChannel( { routingKey: "connected", exchangeName: "users", data: req });
 };
 
 let disconnectPlayer = function(req, res) {
-    playerList.next(
-        playerList.value.filter((u) => u.socketID !== req),
-      );
+    publishToChannel( { routingKey: "disconnected", exchangeName: "users", data: req });
 };
 
 
-let getAllPlayersOnline = function() {
-    return playerList;
-};
 
-export {login , register , getAllPlayersOnline, disconnectPlayer , addPlayer};
+export {login , register , disconnectPlayer , addPlayer};

@@ -34,7 +34,7 @@ export class StatisticsService {
   }
 
   getPlayersOn() {
-    return this.userSocket.fromEvent('current_player_count');
+    return this.socket.fromEvent('current_player_count');
   }
 
   getGeneralStats() {
