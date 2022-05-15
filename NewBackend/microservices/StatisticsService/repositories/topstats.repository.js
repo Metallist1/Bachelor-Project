@@ -12,38 +12,6 @@ onValue(starCountRef, (snapshot) => {
 });
 
 */
-let addCoreEvent =  async function(event, result) {
-    const postData = {
-        killers_loadout_id: event.killers_loadout_id,
-        player_id: event.player_id,
-        victim_id: event.victim_id,
-        victims_life_end: event.victims_life_end,
-        victims_life_start: event.victims_life_start,
-        victims_loadout_id: event.victims_loadout_id,
-        cause: event.cause
-    };
-    
-    // Get a key for a new Post.
-   // const newPostKey = push(child(dbRef, 'Users')).key;
-    // Write the new post's data simultaneously in the posts list and the user's post list.
-    const updates = {};
-    updates['/Statistics/' + event.map+'/matches/' + event.match_id + "/core_events/" + event.id] = postData;
-    update(dbRef, updates)
-    result(null, postData);
-};
-
-let addEndGameStats =  async function(event, result) {
-
-    // Get a key for a new Post.
-   // const newPostKey = push(child(dbRef, 'Users')).key;
-    // Write the new post's data simultaneously in the posts list and the user's post list.
-    const updates = {};
-    
-    updates['/Statistics/' + event.map+'/matches/' + event.match_id + "/plaers/"] = event.player_final_stats;
-    updates['/Statistics/' + event.map+'/matches/' + event.match_id + "/round_end_time/"] = event.time;
-    update(dbRef, updates)
-    result(null, postData);
-};
 
 let getAllMatchStats =  async function(user, result) {
     const dbRef = ref(database);
@@ -118,4 +86,4 @@ let getFullMapStatistics =  async function(map_id, result) {
             result(error, null);
         });
 };
-export {addCoreEvent, addEndGameStats, getAllMatchStats,  getWeaponName , getSkillName , getFullMapStatistics};
+export {getAllMatchStats,  getWeaponName , getSkillName , getFullMapStatistics};

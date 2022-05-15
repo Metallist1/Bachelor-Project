@@ -1,12 +1,7 @@
 import { createRequire } from 'module'
 const require = createRequire(import.meta.url);
 
-
-import { addCoreEvent, addEndGameStats } from './controllers/topstats.controller.js'
-
-import { addMinorEvent } from './controllers/weapons.controller.js'
-
-import { addMovementEvent } from './controllers/map.controller.js'
+import { addCoreEvent, addEndGameStats, addMinorEvent ,addMovementEvent } from './controllers/recording.controller.js'
 
 // Express
 
@@ -17,6 +12,7 @@ const http = require('http');
 const server = http.createServer(app);
 
 const PORT = process.env.PORT || 3001;
+
 //Sockets
 
 const io = require("socket.io")(server, {

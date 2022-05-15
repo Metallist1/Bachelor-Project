@@ -1,27 +1,6 @@
 
 'use strict';
-import { getAllMatchStats, addCoreEvent as addCoreEventRepository , addEndGameStats as addEndGameStatsRepository , getSkillName , getWeaponName, getFullMapStatistics} from '../repositories/topstats.repository.js'
-
-let addCoreEvent = function(req, res) {
-    addCoreEventRepository(req, function(err, user) {
-        if (err){
-            res(err, null);
-        }else{
-            res(null, user);
-        }
-    });
-};
-
-
-let addEndGameStats = function(req, res) {
-    addEndGameStatsRepository(req, function(err, user) {
-        if (err){
-            res(err, null);
-        }else{
-            res(null, user);
-        }
-    });
-}; 
+import { getAllMatchStats, getSkillName , getWeaponName, getFullMapStatistics} from '../repositories/topstats.repository.js'
 
 let getMostCommonSkill = function(req, res) {
     getAllMatchStats(req, function(err, match_info) {
@@ -179,7 +158,7 @@ let getBulletsFired = function(req, res) {
 };
 
 
-export {addCoreEvent,addEndGameStats , getMostCommonSkill , getMostPopularMap,getMostPopularWeapon, getTotalSteps , getBulletsFired};
+export {getMostCommonSkill , getMostPopularMap,getMostPopularWeapon, getTotalSteps , getBulletsFired};
 
 // Get top players by kills
 
