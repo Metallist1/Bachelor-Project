@@ -43,14 +43,20 @@ server.listen(PORT, function (err) {
     }
 });
 
+let currentPlayerCount = 0;
+
 //Socket IO
 getAllPlayersOnline().subscribe((data) => {
+    currentPlayerCount = data.length;
     io.emit("current_player_count", data.length);
 });
 
 io.on("connection", function (socket) {
 
     console.log("Socket : " + socket.id + " has connected");
+
+    socket.emit("current_player_count", currentPlayerCount);
+    
     getAllMaps(null, function(err, allMaps) {
         if (err){
             console.log(err);
@@ -70,13 +76,18 @@ io.on("connection", function (socket) {
             socket.emit("all_weapons", all_weapons);
         }
     });
-
+    const start = new Date()
+    
     getTopStats(null, function(err, general_statistics) {
         if (err){
             console.log(err);
             socket.emit("get_user_error", err);
         }
         else{
+            const stop = new Date()
+    
+            console.log(`Time Taken to execute = ${(stop - start)/1000} seconds`)
+            
             socket.emit("general_statistics", general_statistics);
         }
     });
@@ -94,6 +105,7 @@ io.on("connection", function (socket) {
     });
 
     socket.on('get_statistics_by_weapon_id', (loadoutID) => {
+        const start = new Date()
         getWeaponStatistics(loadoutID.id, function(err, weapon_stat) {
             if (err){
                 console.log(err);
@@ -101,6 +113,9 @@ io.on("connection", function (socket) {
             }
             else{
                 socket.emit("weapon_statistics", weapon_stat);
+                const stop = new Date()
+    
+                console.log(`Time Taken to execute = ${(stop - start)/1000} seconds`)
             }
         });
     });

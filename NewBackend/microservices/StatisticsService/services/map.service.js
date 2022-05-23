@@ -1,5 +1,6 @@
 'use strict';
-import {getMapStatistics, getAllMaps as getAllMapsRepository, getFullMapStatistics , getSkillName , getWeaponName} from '../repositories/map.repository.js'
+
+import {getSkillName, getWeaponInfo, getMapStatistics , getFullMapStatistics } from '../repositories/statistics.repository.js';
 
 let getTopLoadoutByMap = function(req, res) {
     getMapStatistics(req, function(err, map_info) {
@@ -27,16 +28,15 @@ let getTopLoadoutByMap = function(req, res) {
             });
             let weapon_id = -1;
             weapon_id = items[0][0];
-            getWeaponName(weapon_id, function(err, weapon) {
+            getWeaponInfo(weapon_id, function(err, weapon) {
                 if (err){
                     res(err, null);
                 }else{
-                    res(null, weapon);
+                    res(null, weapon.primary_weapon);
                 }
             });
         }
     });
-    res(null, "None");
 };
 
 let getTopSkillByMap = function(req, res) {
@@ -177,7 +177,7 @@ let getPopuliarityOfMap = function(req, res) {
 };
 
 let getAllMaps = function(req, res) {
-    getAllMapsRepository(req, function(err, user) {
+    getFullMapStatistics(req, function(err, user) {
         if (err){
             res(err, null);
         }else{

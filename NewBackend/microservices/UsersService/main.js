@@ -43,6 +43,8 @@ io.on("connection", function (socket) {
 
     socket.on('login', (message) => {
         console.log(message);
+        const start = new Date()
+
         login(message, function(err, user) {
             if (err){
                 console.log(err);
@@ -63,6 +65,9 @@ io.on("connection", function (socket) {
                        
                     }
                 });
+                const stop = new Date()
+        
+                console.log(`Time Taken to execute = ${(stop - start)/1000} seconds`)
                 socket.emit("logged_in", user);
             }
         });
@@ -101,7 +106,6 @@ io.on("connection", function (socket) {
                 console.log(err);
             }
             else{
-                
             }
         });
         console.log("User : " + socket.id + " has disconnect");

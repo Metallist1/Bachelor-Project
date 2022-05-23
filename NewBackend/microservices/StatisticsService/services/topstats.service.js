@@ -1,6 +1,7 @@
 
 'use strict';
-import { getAllMatchStats, getSkillName , getWeaponName, getFullMapStatistics} from '../repositories/topstats.repository.js'
+
+import { getSkillName , getWeaponInfo , getFullMapStatistics, getAllMatchStats} from '../repositories/statistics.repository.js'
 
 let getMostCommonSkill = function(req, res) {
     getAllMatchStats(req, function(err, match_info) {
@@ -65,7 +66,7 @@ let getMostPopularMap = function(req, res) {
             let map_name = "none";
             map_info.forEach((value) => {
                 if(value.id == top_map){
-                    map_name = value.name_of_map;
+                    map_name = value.map_display_name;
                 }
             });
             res(null, map_name);
@@ -102,11 +103,11 @@ let getMostPopularWeapon = function(req, res) {
 
             let weapon_id = -1;
             weapon_id = items[0][0];
-            getWeaponName(weapon_id, function(err, weapon) {
+            getWeaponInfo(weapon_id, function(err, weapon) {
                 if (err){
                     res(err, null);
                 }else{
-                    res(null, weapon);
+                    res(null, weapon.primary_weapon);
                 }
             });
         }

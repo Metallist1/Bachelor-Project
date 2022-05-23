@@ -32,7 +32,7 @@ let addPlayer = function(req, res) {
 };
 
 let disconnectPlayer = function(req, res) {
-    publishToChannel( { routingKey: "disconnected", exchangeName: "users", data: req });
+    publishToChannel( { routingKey: "disconnected", exchangeName: "users", data: req.toString() });
 };
 
 

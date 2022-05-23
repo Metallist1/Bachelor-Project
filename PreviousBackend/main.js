@@ -1,39 +1,4 @@
-import { createRequire } from 'module'
-const require = createRequire(import.meta.url);
 
-//Controllers
-import { login, addPlayer, disconnectPlayer,getAllPlayersOnline,register } from './controllers/user.controller.js'
-
-import { addCoreEvent, addEndGameStats, getBulletsFired, getMostPopularMap, getMostPopularWeapon, getTopStats, getTotalSteps } from './controllers/topstats.controller.js'
-
-import { addMinorEvent, getAllWeapons, getWeaponStatistics, getAverageHitMiss, getPopuliarityByID , getTotalDeathsByID, getTotalKillsByID } from './controllers/weapons.controller.js'
-
-import { addMovementEvent, getAllMaps, getMapStatistics, getAverageMapSurvivalTime, getPopuliarityOfMap, getTopLoadoutByMap ,getTopSkillByMap ,getTotalDeathsByMap, getTotalKillsByMap } from './controllers/map.controller.js'
-
-// Express
-
-const app = require('express')();
-const bodyParser = require('body-parser');
-
-const http = require('http');
-const server = http.createServer(app);
-
-const PORT = process.env.PORT || 3000;
-//Sockets
-
-const io = require("socket.io")(server, {
-    cors: {
-      origin: "*",
-      methods: ["GET", "POST"]
-    }
-  });
-
-// Socket setup
-//const io = socket(server);
-
-
-// Middleware
-app.use(bodyParser.json());
 
 app.post('/event', function (req, res) {
     let change = req.body;

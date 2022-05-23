@@ -11,9 +11,6 @@ let addMovementEvent =  async function(event, result) {
         type: event.type
     };
 
-    // Get a key for a new Post.
-   // const newPostKey = push(child(dbRef, 'Users')).key;
-    // Write the new post's data simultaneously in the posts list and the user's post list.
     const updates = {};
     updates['/Statistics/' + event.map+'/matches/' + event.match_id + "/movement_events/" + event.id] = postData;
     update(dbRef, updates)

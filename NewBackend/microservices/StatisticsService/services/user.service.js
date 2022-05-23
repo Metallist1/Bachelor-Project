@@ -10,7 +10,7 @@ let addPlayer = function(req, res) {
     const existingUser = playerList.value.find(
         (u) => u.socketID === req.socketID,
       );
-      if (!existingUser) {
+      if (existingUser) {
         console.log("User already added")
       } else {
         console.log("New user added to behavior")

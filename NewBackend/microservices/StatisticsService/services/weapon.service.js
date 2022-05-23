@@ -1,9 +1,9 @@
 
 'use strict';
-import {getAllWeaponStats , getAllWeapons as getAllWeaponsRepository , getWeaponInfo as getWeaponInfoRepository } from '../repositories/weapon.repository.js'
+import {getAllMatchStats , getAllWeapons as getAllWeaponsRepository , getWeaponInfo as getWeaponInfoRepository } from '../repositories/statistics.repository.js'
 
 let getAverageHitMiss = function(req, res) {
-    getAllWeaponStats(req, function(err, weapon_info) {
+    getAllMatchStats(req, function(err, weapon_info) {
         if (err){
             res(err, null);
         }else{
@@ -30,7 +30,7 @@ let getAverageHitMiss = function(req, res) {
 };
 
 let getTotalKillsByID = function(req, res) {
-    getAllWeaponStats(req, function(err, weapon_info) {
+    getAllMatchStats(req, function(err, weapon_info) {
         if (err){
             res(err, null);
         }else{
@@ -55,7 +55,7 @@ let getTotalKillsByID = function(req, res) {
 };
 
 let getTotalDeathsByID = function(req, res) {
-    getAllWeaponStats(req, function(err, weapon_info) {
+    getAllMatchStats(req, function(err, weapon_info) {
         if (err){
             res(err, null);
         }else{
@@ -80,7 +80,7 @@ let getTotalDeathsByID = function(req, res) {
 };
 
 let getPopuliarityByID = function(req, res) {
-    getAllWeaponStats(req, function(err, weapon_info) {
+    getAllMatchStats(req, function(err, weapon_info) {
         if (err){
             res(err, null);
         }else{

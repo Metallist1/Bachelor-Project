@@ -42,7 +42,7 @@ const consume = function consume({ connection, channel, resultsChannel }) {
             // parse message
             let msgBody = msg.content.toString();
             let data = JSON.parse(msgBody);
-  
+            console.log(data);
             // process data
             HandleUserDisconnect(data);
   
