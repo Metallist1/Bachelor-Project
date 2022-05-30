@@ -1,13 +1,12 @@
 'use strict';
+import { createRequire } from 'module'
+const require = createRequire(import.meta.url);
 
 import { database } from "../db/firebaseDB.js";
-import { ref, child, get, onValue } from "firebase/database";
+import { ref, onValue } from "firebase/database";
 
-
-let allWeapons = [];
-let allSkills = [];
-let allStats = [];
-
+const NodeCache = require( "node-cache" );
+const myCache = new NodeCache( {  checkperiod: 0 } );
 
 onValue(ref(database, 'Loadouts/'), (snapshot) => {
     if (snapshot.exists()) {
@@ -22,7 +21,7 @@ onValue(ref(database, 'Loadouts/'), (snapshot) => {
                 granade: value.granade
             });
         });
-        allWeapons = all_weapons;
+        myCache.set( "all_weapons", all_weapons, 0 );
     } else {
         console.log("No data available");
     }
@@ -39,7 +38,7 @@ onValue(ref(database, 'Skills/'), (snapshot) => {
                 skill_name: value.skill_name
             });
         });
-        allSkills = all_skills;
+        myCache.set( "all_skills", all_skills, 0 );
     } else {
         console.log("No data available For skills");
     }
@@ -57,7 +56,7 @@ onValue(ref(database, 'Statistics/'), (snapshot) => {
                 map_display_name: value.map_name
             });
         });
-        allStats = all_stats;
+        myCache.set( "all_stats", all_stats, 0 );
     } else {
         console.log("No data available For Statistics");
     }
@@ -65,6 +64,10 @@ onValue(ref(database, 'Statistics/'), (snapshot) => {
 
 let getSkillName =  async function(skill_id, result) {
     let isFound = null;
+    const allSkills = myCache.get( "all_skills" );
+    if ( allSkills == undefined ){
+        result("No statistics found", null);
+    }
     for (let i = 0; i < allSkills.length; i++) {
         if(allSkills[i].id == skill_id){
             isFound = allSkills[i].skill_name;
@@ -79,13 +82,23 @@ let getSkillName =  async function(skill_id, result) {
     }
 };
 
-let getAllWeapons =  async function(user, result) {
-    result(null, allWeapons);
+let getAllWeapons =  async function(none, result) {
+    const value = myCache.get( "all_weapons" );
+    if ( value == undefined ){
+        result("No Weapons found", null);
+    }
+    result(null, value);
 };
 
 
 let getWeaponInfo =  async function(id, result) {
     let isFound = null;
+
+    const allWeapons = myCache.get( "all_weapons" );
+    if ( allWeapons == undefined ){
+        result("No Weapons found", null);
+    }
+
     for (let i = 0; i < allWeapons.length; i++) {
         if(allWeapons[i].id == id){
             isFound = allWeapons[i];
@@ -101,6 +114,10 @@ let getWeaponInfo =  async function(id, result) {
 
 let getMapStatistics =  async function(map_id, result) {
     let isFound = null;
+    const allStats = myCache.get( "all_stats" );
+    if ( allStats == undefined ){
+        result("No statistics found", null);
+    }
     for (let i = 0; i < allStats.length; i++) {
         if(allStats[i].id.toString() == map_id.toString()){
             isFound = allStats[i];
@@ -108,18 +125,26 @@ let getMapStatistics =  async function(map_id, result) {
         }
     }
     if(!isFound){
-        result("No data available weapon info", null);
+        result("No data available map info", null);
     }else{
         result(null, isFound);
     }
 };
 
 let getFullMapStatistics =  async function(map_id, result) {
-    result(null, allStats);
+    const value = myCache.get( "all_stats" );
+    if ( value == undefined ){
+        result("No statistics found", null);
+    }
+    result(null, value);
 };
 
 let getAllMatchStats =  async function(user, result) {
     let isFound = [];
+    const allStats = myCache.get( "all_stats" );
+    if ( allStats == undefined ){
+        result("No statistics found", null);
+    }
     for (let i = 0; i < allStats.length; i++) {
         isFound.push( Object.entries(  allStats[i].matches));
     }

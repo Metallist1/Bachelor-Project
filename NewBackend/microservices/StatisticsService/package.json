@@ -4,6 +4,7 @@
         "amqplib": "^0.8.0",
         "express": "^4.17.3",
         "firebase": "^9.6.11",
+        "node-cache": "^5.1.2",
         "rxjs": "^7.5.5",
         "socket.io": "^4.4.1"
     }
