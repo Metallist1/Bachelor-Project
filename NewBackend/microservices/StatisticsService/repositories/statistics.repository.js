@@ -8,6 +8,20 @@ import { ref, onValue } from "firebase/database";
 const NodeCache = require( "node-cache" );
 const myCache = new NodeCache( {  checkperiod: 0 } );
 
+import { Worker } from 'worker_threads';
+
+function runService(workerData) {
+    return new Promise((resolve, reject) => {
+      const worker = new Worker('./repositories/topstats.worker.js', { workerData });
+      worker.on('message', resolve);
+      worker.on('error', reject);
+      worker.on('exit', (code) => {
+        if (code !== 0)
+          reject(new Error(`Worker stopped with exit code ${code}`));
+      })
+    })
+  }
+
 onValue(ref(database, 'Loadouts/'), (snapshot) => {
     if (snapshot.exists()) {
         let all_weapons = [];
@@ -44,7 +58,7 @@ onValue(ref(database, 'Skills/'), (snapshot) => {
     }
 });
 
-onValue(ref(database, 'Statistics/'), (snapshot) => {
+onValue(ref(database, 'Statistics/'), async (snapshot) => {
     if (snapshot.exists()) {
         let all_stats = [];
         const objectArray = Object.entries( snapshot.val());
@@ -57,6 +71,13 @@ onValue(ref(database, 'Statistics/'), (snapshot) => {
             });
         });
         myCache.set( "all_stats", all_stats, 0 );
+        const result = await runService(all_stats);
+
+        myCache.set( "mostCommonSkillID", result.mostCommonSkillID, 0 );
+        myCache.set( "topMap", result.topMap, 0 );
+        myCache.set( "topWeaponID", result.topWeaponID, 0 );
+        myCache.set( "totalSteps", result.totalSteps, 0 );
+        myCache.set( "totalBulletsFired", result.totalBulletsFired, 0 );
     } else {
         console.log("No data available For Statistics");
     }
@@ -131,8 +152,48 @@ let getMapStatistics =  async function(map_id, result) {
     }
 };
 
-let getFullMapStatistics =  async function(map_id, result) {
+let getFullMapStatistics =  async function(defaultVariable, result) {
     const value = myCache.get( "all_stats" );
+    if ( value == undefined ){
+        result("No statistics found", null);
+    }
+    result(null, value);
+};
+
+let getMostCommonSkillID =  async function(defaultVariable, result) {
+    const value = myCache.get( "mostCommonSkillID" );
+    if ( value == undefined ){
+        result("No statistics found", null);
+    }
+    result(null, value);
+};
+
+let getTopMap =  async function(defaultVariable, result) {
+    const value = myCache.get( "topMap" );
+    if ( value == undefined ){
+        result("No statistics found", null);
+    }
+    result(null, value);
+};
+
+let getTopWeaponID =  async function(defaultVariable, result) {
+    const value = myCache.get( "topWeaponID" );
+    if ( value == undefined ){
+        result("No statistics found", null);
+    }
+    result(null, value);
+};
+
+let getTotalSteps =  async function(defaultVariable, result) {
+    const value = myCache.get( "totalSteps" );
+    if ( value == undefined ){
+        result("No statistics found", null);
+    }
+    result(null, value);
+};
+
+let getTotalBulletsFired =  async function(defaultVariable, result) {
+    const value = myCache.get( "totalBulletsFired" );
     if ( value == undefined ){
         result("No statistics found", null);
     }
@@ -151,4 +212,4 @@ let getAllMatchStats =  async function(user, result) {
     result(null, isFound);
 };
 
-export { getAllWeapons, getWeaponInfo , getSkillName, getMapStatistics, getFullMapStatistics, getAllMatchStats};
+export { getAllWeapons, getWeaponInfo, getSkillName, getMapStatistics, getFullMapStatistics, getAllMatchStats, getMostCommonSkillID, getTopMap, getTopWeaponID, getTotalSteps, getTotalBulletsFired };

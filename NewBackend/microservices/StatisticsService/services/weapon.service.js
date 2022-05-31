@@ -1,4 +1,3 @@
-
 'use strict';
 import {getAllMatchStats , getAllWeapons as getAllWeaponsRepository , getWeaponInfo as getWeaponInfoRepository } from '../repositories/statistics.repository.js'
 
@@ -117,11 +116,11 @@ let getPopuliarityByID = function(req, res) {
 };
 
 let getAllWeapons = function(req, res) {
-    getAllWeaponsRepository(req, function(err, user) {
+    getAllWeaponsRepository(req, function(err, all_weapons) {
         if (err){
             res(err, null);
         }else{
-            res(null, user);
+            res(null, all_weapons);
         }
     });
 };
